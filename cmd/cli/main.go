@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fiascli-clean/config"
 	"github.com/sirupsen/logrus"
+	"gitlab.com/ilaryonov/fiascli-clean/config"
+	"gitlab.com/ilaryonov/fiascli-clean/server/cli"
 )
 
 func main() {
@@ -10,5 +11,9 @@ func main() {
 	if err := config.Init(); err != nil {
 		logger.Fatalf("%s", err.Error())
 	}
+	app := cli.NewApp(logger)
 
+	if err := app.Run(); err != nil {
+		app.Logger.Fatalf("%s", err.Error())
+	}
 }
