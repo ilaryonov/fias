@@ -1,4 +1,4 @@
-package _interface
+package address
 
 type AddressServiceInterface interface {
 	 Import() bool

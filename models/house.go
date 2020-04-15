@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/xml"
-	_ "fiascli/cliApp/config"
 	"fmt"
 	"github.com/jinzhu/gorm"
 	"os"

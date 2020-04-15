@@ -1,13 +1,7 @@
 package models
 
 import (
-	"encoding/xml"
-	"fmt"
 	"github.com/jinzhu/gorm"
-	"os"
-	"path/filepath"
-	"sync"
-	"time"
 )
 
 type AddrObject struct {

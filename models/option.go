@@ -1,9 +1,5 @@
 package models
 
-import (
-	_"fiascli/cliApp/config"
-)
-
 type Option struct {
 	Id int
 	Name string
