@@ -5,7 +5,6 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	"gitlab.com/ilaryonov/fiascli-clean/config"
-	addressRepo "gitlab.com/ilaryonov/fiascli-clean/domain/address/repository"
 	"gitlab.com/ilaryonov/fiascli-clean/server/cli"
 	"strconv"
 )
@@ -27,7 +26,7 @@ func main() {
 	}
 	db.LogMode(logMode)
 
-	addressRepo := addressRepo.NewGormAddressRepository(db)
+	//addressRepo := addressRepo.NewGormAddressRepository(db)
 
 	if err := app.Run(); err != nil {
 		app.Logger.Fatalf("%s", err.Error())
