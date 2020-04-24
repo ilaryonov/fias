@@ -1,4 +1,4 @@
-package models
+package version
 
 type Option struct {
 	Id int

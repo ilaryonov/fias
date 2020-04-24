@@ -1,35 +1,41 @@
-package models
+package house
 
 import (
+	"encoding/xml"
+	"fmt"
 	"github.com/jinzhu/gorm"
+	"os"
+	"path/filepath"
+	"sync"
+	"time"
 )
 
-type AddrObject struct {
+type HouseObject struct {
 	gorm.Model
-	Aoguid     string `xml:"AOGUID,attr" gorm:"unique_index`
-	Aolevel    string `xml:"AOLEVEL,attr" gorm:"index:city;index:street`
-	Parentguid string `xml:"PARENTGUID,attr" gorm:"index:parent;index:street`
-	Shortname  string `xml:"SHORTNAME,attr" gorm:"index:city`
-	Formalname string `xml:"FORMALNAME,attr" gorm:"index:city;index:street`
-	Offname    string `xml:"OFFNAME,attr"`
+	ParentGuid string `xml:"AOGUID,attr"`
+	Houseguid  string `xml:"HOUSEGUID,attr"`
+	Housenum   string `xml:"HOUSENUM,attr"`
+	Buildnum   string `xml:"BUILDNUM,attr"`
+	Structnum  string `xml:"STRUCTNUM,attr"`
 	Postalcode string `xml:"POSTALCODE,attr"`
-	Actstatus  string `xml:"ACTSTATUS,attr"`
 }
 
-type AddrObjects struct {
-	Object []AddrObject
+type HouseObjects struct {
+	Object []HouseObjects
 }
 
-func (a AddrObject) GetXmlFile() string {
-	return "AS_ADDROBJ_"
+func (a HouseObject) GetXmlFile() string {
+	return "AS_HOUSE_"
 }
 
-func (a AddrObject) TableName() string {
-	return "fias_address"
+func (o HouseObject) TableName() string {
+	return "fias_house"
 }
 
-/*func (a *AddrObject) Import(f os.FileInfo, wg *sync.WaitGroup, db *gorm.DB) {
+func (a *HouseObject) Import(f os.FileInfo, wg *sync.WaitGroup, db *gorm.DB) {
 	defer wg.Done()
+
+	fmt.Println(a.TableName(), f.Name())
 
 	start := time.Now()
 	path, err := filepath.Abs("/media/ilarionov/hard-disk/fias/" + f.Name())
@@ -38,9 +44,8 @@ func (a AddrObject) TableName() string {
 		fmt.Println("Error opening file: ", err)
 	}
 	defer xmlFile.Close()
-
-	decoder := xml.NewDecoder(xmlFile)
 	total := 0
+	decoder := xml.NewDecoder(xmlFile)
 
 	var element string
 	var collection []interface{}
@@ -53,16 +58,12 @@ func (a AddrObject) TableName() string {
 		switch se := t.(type) {
 		case xml.StartElement:
 			element = se.Name.Local
-			if element == "Object" {
+			if element == "House" {
 
 				decoder.DecodeElement(&a, &se)
-				a.ID = 0
-				//db.Create(&a)
-				if a.Actstatus == "0" {
-					continue
-				}
 
-				//fmt.Println(object.Formalname)
+				a.ID = 0
+
 				if len(collection) < 2500 {
 					collection = append(collection, *a)
 					total++
@@ -82,8 +83,9 @@ func (a AddrObject) TableName() string {
 			fmt.Println("error", err.Error())
 		}
 	}
+
 	finish := time.Now()
 	fmt.Println("Количество добавленных записей в адреса:", total)
-	fmt.Println("Время выполнения адресов:", finish.Sub(start))
+	fmt.Println("Время выполнения домов:", finish.Sub(start))
 	fmt.Println(a.TableName(), f.Name())
-}*/
+}

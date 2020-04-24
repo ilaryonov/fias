@@ -3,7 +3,6 @@ package mysql
 import (
 	"github.com/jinzhu/gorm"
 	"gitlab.com/ilaryonov/fiascli-clean/domain/address"
-	"gitlab.com/ilaryonov/fiascli-clean/models"
 )
 
 type AddressRepository struct {
@@ -19,10 +18,10 @@ func NewMysqlAddressRepository(db *gorm.DB) address.AddressRepositoryInterface {
 }
 
 
-func (a AddressRepository) GetByFormalname(term string) (*models.AddrObject, error) {
+func (a AddressRepository) GetByFormalname(term string) (*address.AddrObject, error) {
 	panic("implement me")
 }
 
-func (a AddressRepository) GetCityByFormalname(term string) (*models.AddrObject, error) {
+func (a AddressRepository) GetCityByFormalname(term string) (*address.AddrObject, error) {
 	panic("implement me")
 }
