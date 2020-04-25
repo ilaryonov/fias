@@ -1,4 +1,4 @@
-package version
+package entity
 
 type Option struct {
 	Id int

@@ -1,13 +1,7 @@
-package house
+package entity
 
 import (
-	"encoding/xml"
-	"fmt"
 	"github.com/jinzhu/gorm"
-	"os"
-	"path/filepath"
-	"sync"
-	"time"
 )
 
 type HouseObject struct {
@@ -32,7 +26,7 @@ func (o HouseObject) TableName() string {
 	return "fias_house"
 }
 
-func (a *HouseObject) Import(f os.FileInfo, wg *sync.WaitGroup, db *gorm.DB) {
+/*func (a *HouseObject) Import(f os.FileInfo, wg *sync.WaitGroup, db *gorm.DB) {
 	defer wg.Done()
 
 	fmt.Println(a.TableName(), f.Name())
@@ -88,4 +82,4 @@ func (a *HouseObject) Import(f os.FileInfo, wg *sync.WaitGroup, db *gorm.DB) {
 	fmt.Println("Количество добавленных записей в адреса:", total)
 	fmt.Println("Время выполнения домов:", finish.Sub(start))
 	fmt.Println(a.TableName(), f.Name())
-}
+}*/
