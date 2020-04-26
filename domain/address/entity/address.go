@@ -24,7 +24,7 @@ func (a AddrObject) GetXmlFile() string {
 	return "AS_ADDROBJ_"
 }
 
-func (a AddrObject) TableName() string {
+func (a *AddrObject) TableName() string {
 	return "fias_address"
 }
 
