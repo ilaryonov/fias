@@ -16,6 +16,8 @@ func NewHandler(a service.VersionService) *Handler {
 }
 
 func (h *Handler) GetVersionInfo() {
-	v, err := h.versionService.GetVersionInfo()
+	//version := entity.Version{Name: "Version", Version: 615}
+	//err := h.versionService.UpdateVersion(&version)
+	v, err := h.versionService.GetLastVersionInfo()
 	log.Println(v, err)
 }

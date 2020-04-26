@@ -19,7 +19,7 @@ type App struct {
 	Server         *cli.App
 	Logger         logrus.Logger
 	DB             *gorm.DB
-	addressService *address.AddressService
+	AddressService *address.AddressService
 	VersionService *version.VersionService
 }
 
@@ -32,8 +32,8 @@ func NewApp(logger logrus.Logger) *App {
 		Server:         server,
 		Logger:         logger,
 		DB:             db,
-		addressService: address.NewAddressService(addressRepo),
-		VersionService: version.NewVersionService(versionRepo),
+		AddressService: address.NewAddressService(addressRepo, logger),
+		VersionService: version.NewVersionService(versionRepo, logger),
 	}
 }
 
@@ -51,7 +51,7 @@ func initDb() *gorm.DB {
 	db.Set("gorm:table_options", "charset=utf8")
 	db.AutoMigrate(&entity.AddrObject{})
 	db.AutoMigrate(&entity.HouseObject{})
-	db.AutoMigrate(&entity2.Option{})
+	db.AutoMigrate(&entity2.Version{})
 	return db
 }
 

@@ -6,7 +6,7 @@ import (
 )
 
 type VersionRepositoryInterface interface {
-	GetVersion(ctx context.Context) (*entity.Option, error)
-	UpdateVersion(ctx context.Context, version *entity.Option) error
-	CreateVersion(ctx context.Context, version *entity.Option) error
+	GetVersion(ctx context.Context) (*entity.Version, error)
+	UpdateVersion(ctx context.Context, version *entity.Version) error
+	CreateVersion(ctx context.Context, version *entity.Version) error
 }
