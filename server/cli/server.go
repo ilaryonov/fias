@@ -9,6 +9,9 @@ import (
 	"gitlab.com/ilaryonov/fiascli-clean/domain/address/entity"
 	addressMysql "gitlab.com/ilaryonov/fiascli-clean/domain/address/repository/mysql"
 	address "gitlab.com/ilaryonov/fiascli-clean/domain/address/service"
+	directory "gitlab.com/ilaryonov/fiascli-clean/domain/directory/service"
+	fiasApi "gitlab.com/ilaryonov/fiascli-clean/domain/fiasApi/service"
+	file "gitlab.com/ilaryonov/fiascli-clean/domain/file/service"
 	entity2 "gitlab.com/ilaryonov/fiascli-clean/domain/version/entity"
 	versionMysql "gitlab.com/ilaryonov/fiascli-clean/domain/version/repository/mysql"
 	version "gitlab.com/ilaryonov/fiascli-clean/domain/version/service"
@@ -16,11 +19,14 @@ import (
 )
 
 type App struct {
-	Server         *cli.App
-	Logger         logrus.Logger
-	DB             *gorm.DB
-	AddressService *address.AddressService
-	VersionService *version.VersionService
+	Server           *cli.App
+	Logger           logrus.Logger
+	DB               *gorm.DB
+	AddressService   *address.AddressImportService
+	VersionService   *version.VersionService
+	DirectoryService *directory.DirectoryService
+	FileService      *file.FileService
+	FiasApiService   *fiasApi.FiasApiService
 }
 
 func NewApp(logger logrus.Logger) *App {
@@ -29,11 +35,14 @@ func NewApp(logger logrus.Logger) *App {
 	addressRepo := addressMysql.NewMysqlAddressRepository(db)
 	versionRepo := versionMysql.NewMysqlVersionRepository(db)
 	return &App{
-		Server:         server,
-		Logger:         logger,
-		DB:             db,
-		AddressService: address.NewAddressService(addressRepo, logger),
-		VersionService: version.NewVersionService(versionRepo, logger),
+		Server:           server,
+		Logger:           logger,
+		DB:               db,
+		AddressService:   address.NewAddressService(addressRepo, logger),
+		VersionService:   version.NewVersionService(versionRepo, logger),
+		DirectoryService: directory.NewDirectoryService(logger),
+		FileService:      file.NewFileService(logger),
+		FiasApiService:   fiasApi.NewFiasApiService(logger),
 	}
 }
 

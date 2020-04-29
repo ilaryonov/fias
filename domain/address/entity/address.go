@@ -20,7 +20,7 @@ type AddrObjects struct {
 	Object []AddrObject
 }
 
-func (a AddrObject) GetXmlFile() string {
+func GetAddressXmlFile() string {
 	return "AS_ADDROBJ_"
 }
 

@@ -1,9 +1,7 @@
 package entity
 
-import "github.com/jinzhu/gorm"
-
 type Version struct {
-	gorm.Model
+	Id int
 	Version int
 }
 

@@ -2,12 +2,11 @@ package cli
 
 import (
 	"github.com/urfave/cli"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/version/service"
 	server "gitlab.com/ilaryonov/fiascli-clean/server/cli"
 )
 
-func RegisterCliEndpoints(app *server.App, versionService *service.VersionService) {
-	h := NewHandler(*versionService)
+func RegisterCliEndpoints(app *server.App) {
+	h := NewHandler(*app.VersionService)
 	app.Server.Commands = []cli.Command{
 		{
 			Name:  "version",

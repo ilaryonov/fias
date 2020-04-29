@@ -18,7 +18,7 @@ type HouseObjects struct {
 	Object []HouseObjects
 }
 
-func (a HouseObject) GetXmlFile() string {
+func GetHouseXmlFile() string {
 	return "AS_HOUSE_"
 }
 

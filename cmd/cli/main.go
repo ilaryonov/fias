@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/sirupsen/logrus"
 	"gitlab.com/ilaryonov/fiascli-clean/config"
-	cli2 "gitlab.com/ilaryonov/fiascli-clean/domain/address/delivery/cli"
+	addressDelivery "gitlab.com/ilaryonov/fiascli-clean/domain/address/delivery/cli"
 	versionDelivery "gitlab.com/ilaryonov/fiascli-clean/domain/version/delivery/cli"
 	"gitlab.com/ilaryonov/fiascli-clean/server/cli"
 	"os"
@@ -19,8 +19,8 @@ func main() {
 		logger.Fatalf("%s", err.Error())
 	}
 	app := cli.NewApp(logger)
-	versionDelivery.RegisterCliEndpoints(app, app.VersionService)
-	cli2.RegisterCliEndpoints(app, app.AddressService)
+	versionDelivery.RegisterCliEndpoints(app)
+	addressDelivery.RegisterCliEndpoints(app)
 
 	//addressRepo := addressRepo.NewGormAddressRepository(db)
 
