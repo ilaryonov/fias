@@ -3,16 +3,12 @@ package helper
 import (
 	"encoding/xml"
 	"fmt"
-	"github.com/spf13/viper"
+	"gitlab.com/ilaryonov/fiascli-clean/domain/address/entity"
 	"os"
-	"path/filepath"
 )
 
-type DecodeNode func()
-
-func ParseFile(fileName string, c chan xml.StartElement) {
-	path, err := filepath.Abs(viper.GetString("directory.filePath") + fileName)
-	xmlFile, err := os.Open(path)
+func ParseFile(fileName string, c chan entity.XmlToStructInterface, done chan bool, str entity.XmlToStructInterface) {
+	xmlFile, err := os.Open(fileName)
 	if err != nil {
 		fmt.Println("Error opening file: ", err)
 	}
@@ -27,7 +23,11 @@ func ParseFile(fileName string, c chan xml.StartElement) {
 		}
 		switch se := t.(type) {
 		case xml.StartElement:
-			c <- se
+			data, err := str.UnmarshalXml(decoder, &se)
+			if err == nil {
+				c <- data
+			}
 		}
 	}
+	done <- true
 }

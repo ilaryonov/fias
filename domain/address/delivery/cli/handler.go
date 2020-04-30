@@ -25,7 +25,7 @@ func (h *Handler) CheckUpdates(fiasApi *fiasApi.FiasApiService, versionService *
 		h.logger.Error(err.Error())
 	}
 	if v.Version > 0 {
-		h.addressService.CheckUpdates(fiasApi)
+		h.addressService.CheckUpdates(fiasApi, v.Version)
 	} else {
 		h.addressService.StartFullImport(fiasApi)
 	}

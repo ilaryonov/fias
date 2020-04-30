@@ -2,30 +2,29 @@ package service
 
 import (
 	"github.com/sirupsen/logrus"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/file/entity"
-	"log"
-	"os"
-	"strings"
+	"gitlab.com/ilaryonov/fiascli-clean/domain/directory/entity"
 )
 
 type DirectoryService struct {
 	logger logrus.Logger
+	downloadService *DownloadService
 }
 
 func NewDirectoryService(logger logrus.Logger) *DirectoryService {
 	return &DirectoryService{
 		logger: logger,
+		downloadService: NewDownloadService(logger),
 	}
 }
 
-func (d *DirectoryService) UnzipFiles(file *entity.File) {
-	files, err := file.Unzip(app.Config.FilePath+fileName, app.Config.FilePath)
+func (d *DirectoryService) DownloadAndExtractFile(url string) *[] entity.File {
+	file, err := d.downloadService.DownloadFile(url)
 	if err != nil {
-		log.Fatal(err.Error())
+		logrus.Fatal(err.Error())
 	}
-	log.Println("Unzipped:\n" + strings.Join(files, "\n"))
-	err = os.Remove(app.Config.FilePath + fileName)
+	extractedFiles, err := d.downloadService.Unzip(file)
 	if err != nil {
-		log.Fatal(err.Error())
+		logrus.Fatal(err.Error())
 	}
+	return  &extractedFiles
 }

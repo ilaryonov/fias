@@ -1,7 +1,10 @@
 package entity
 
 import (
+	"encoding/xml"
+	"errors"
 	"github.com/jinzhu/gorm"
+	"time"
 )
 
 type HouseObject struct {
@@ -12,6 +15,24 @@ type HouseObject struct {
 	Buildnum   string `xml:"BUILDNUM,attr"`
 	Structnum  string `xml:"STRUCTNUM,attr"`
 	Postalcode string `xml:"POSTALCODE,attr"`
+	EndDate string `xml:"ENDDATE,attr"`
+}
+
+func (o *HouseObject) UnmarshalXml(decoder *xml.Decoder, se *xml.StartElement) (XmlToStructInterface, error) {
+	layoutISO := "2006-01-02"
+	if se.Name.Local == "House" {
+		err := decoder.DecodeElement(o, se)
+		o.ID = 0
+		if err != nil {
+			return nil, err
+		}
+		t, _ := time.Parse(layoutISO, o.EndDate)
+		if t.Unix() < time.Now().Unix() {
+			return nil, errors.New("old date for house")
+		}
+		return o, nil
+	}
+	return nil, errors.New("not house entity")
 }
 
 type HouseObjects struct {

@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"encoding/xml"
+	"errors"
 	"github.com/jinzhu/gorm"
 )
 
@@ -16,8 +18,19 @@ type AddrObject struct {
 	Actstatus  string `xml:"ACTSTATUS,attr"`
 }
 
-type AddrObjects struct {
-	Object []AddrObject
+func (a *AddrObject) UnmarshalXml(decoder *xml.Decoder, se *xml.StartElement) (XmlToStructInterface, error) {
+	if se.Name.Local == "Object" {
+		err := decoder.DecodeElement(a, se)
+		a.ID = 0
+		if a.Actstatus == "0" {
+			return nil, errors.New("not active")
+		}
+		if err != nil {
+			return nil, err
+		}
+		return a, nil
+	}
+	return nil, errors.New("not entity")
 }
 
 func GetAddressXmlFile() string {
@@ -27,63 +40,3 @@ func GetAddressXmlFile() string {
 func (a *AddrObject) TableName() string {
 	return "fias_address"
 }
-
-/*func (a *AddrObject) Import(f os.FileInfo, wg *sync.WaitGroup, db *gorm.DB) {
-	defer wg.Done()
-
-	start := time.Now()
-	path, err := filepath.Abs("/media/ilarionov/hard-disk/fias/" + f.Name())
-	xmlFile, err := os.Open(path)
-	if err != nil {
-		fmt.Println("Error opening file: ", err)
-	}
-	defer xmlFile.Close()
-
-	decoder := xml.NewDecoder(xmlFile)
-	total := 0
-
-	var element string
-	var collection []interface{}
-
-	for {
-		t, _ := decoder.Token()
-		if t == nil {
-			break
-		}
-		switch se := t.(type) {
-		case xml.StartElement:
-			element = se.Name.Local
-			if element == "Object" {
-
-				decoder.DecodeElement(&a, &se)
-				a.ID = 0
-				//db.Create(&a)
-				if a.Actstatus == "0" {
-					continue
-				}
-
-				//fmt.Println(object.Formalname)
-				if len(collection) < 2500 {
-					collection = append(collection, *a)
-					total++
-				} else {
-					err := BatchInsert(db, collection)
-					if err != nil {
-						fmt.Println("error", err.Error())
-					}
-					collection = collection[:0]
-				}
-			}
-		}
-	}
-	if len(collection) > 0 {
-		err := BatchInsert(db, collection)
-		if err != nil {
-			fmt.Println("error", err.Error())
-		}
-	}
-	finish := time.Now()
-	fmt.Println("Количество добавленных записей в адреса:", total)
-	fmt.Println("Время выполнения адресов:", finish.Sub(start))
-	fmt.Println(a.TableName(), f.Name())
-}*/
