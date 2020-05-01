@@ -29,6 +29,11 @@ type App struct {
 
 func NewApp(logger logrus.Logger) *App {
 	server := initCli()
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Fatal(r)
+		}
+	}()
 	db := initDb()
 	addressRepo := addressMysql.NewMysqlAddressRepository(db)
 	versionRepo := versionMysql.NewMysqlVersionRepository(db)
@@ -47,7 +52,7 @@ func NewApp(logger logrus.Logger) *App {
 func initDb() *gorm.DB {
 	db, err := gorm.Open("mysql", viper.GetString("db.dsn"))
 	if err != nil {
-
+		panic("db connection refused")
 	}
 	//defer db.Close()
 
