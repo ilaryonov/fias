@@ -19,6 +19,7 @@ func main() {
 		logger.Fatalf("%s", err.Error())
 	}
 	app := cli.NewApp(logger)
+	defer app.DB.Close()
 	versionDelivery.RegisterCliEndpoints(app)
 	addressDelivery.RegisterCliEndpoints(app)
 

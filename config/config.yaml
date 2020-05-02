@@ -7,3 +7,5 @@ directory:
   filePath: /media/ilarionov/hard-disk/fias/
 fiasApi:
   url: https://fias.nalog.ru/WebServices/Public/
+import:
+  collectionCount: 2000

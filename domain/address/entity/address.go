@@ -1,8 +1,6 @@
 package entity
 
 import (
-	"encoding/xml"
-	"errors"
 	"github.com/jinzhu/gorm"
 )
 
@@ -18,25 +16,10 @@ type AddrObject struct {
 	Actstatus  string `xml:"ACTSTATUS,attr"`
 }
 
-func (a *AddrObject) UnmarshalXml(decoder *xml.Decoder, se *xml.StartElement) (XmlToStructInterface, error) {
-	if se.Name.Local == "Object" {
-		err := decoder.DecodeElement(a, se)
-		a.ID = 0
-		if a.Actstatus == "0" {
-			return nil, errors.New("not active")
-		}
-		if err != nil {
-			return nil, err
-		}
-		return a, nil
-	}
-	return nil, errors.New("not entity")
-}
-
 func GetAddressXmlFile() string {
 	return "AS_ADDROBJ_"
 }
 
-func (a *AddrObject) TableName() string {
+func (*AddrObject) TableName() string {
 	return "fias_address"
 }
