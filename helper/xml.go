@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-type ParseElement func(decoder *xml.Decoder, element *xml.StartElement) interface{}
+type ParseElement func(decoder *xml.Decoder, element *xml.StartElement) (interface{}, error)
 
 func ParseFile(fileName string, c chan interface{}, done chan bool, ParseElement ParseElement) {
 	xmlFile, err := os.Open(fileName)
@@ -24,7 +24,7 @@ func ParseFile(fileName string, c chan interface{}, done chan bool, ParseElement
 		}
 		switch se := t.(type) {
 		case xml.StartElement:
-			data := ParseElement(decoder, &se)
+			data, err := ParseElement(decoder, &se)
 			if err == nil {
 				c <- data
 			}

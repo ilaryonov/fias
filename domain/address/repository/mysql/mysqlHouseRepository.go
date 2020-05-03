@@ -7,23 +7,19 @@ import (
 	"log"
 )
 
-type AddressRepository struct {
+type HouseRepository struct {
 	DB *gorm.DB
 }
 
-func NewMysqlAddressRepository(db *gorm.DB) address.AddressRepositoryInterface {
-	return &AddressRepository{DB: db}
-}
-
-func (a *AddressRepository) GetByFormalname(term string) (*entity.AddrObject, error) {
+func (a *HouseRepository) GetByAddressGuid(term string) (*entity.AddrObject, error) {
 	panic("implement me")
 }
 
-func (a AddressRepository) GetCityByFormalname(term string) (*entity.AddrObject, error) {
-	panic("implement me")
+func NewMysqlHouseRepository(db *gorm.DB) address.HouseRepositoryInterface {
+	return &HouseRepository{DB: db}
 }
 
-func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) error {
+func (a *HouseRepository) InsertUpdateCollection(collection []interface{}) error {
 	var aoguid []string
 	var forInsert []interface{}
 
@@ -66,17 +62,7 @@ func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) err
 	return err
 }
 
-func (a *AddressRepository) BatchInsertAddress(collection []interface{}) error {
-
-	return nil
-}
-
-func (a *AddressRepository) BatchInsertHouse(collection []interface{}) error {
-
-	return nil
-}
-
-func (a *AddressRepository) CheckByGuids(guids []string) map[string]entity.AddrObject {
+func (a *HouseRepository) CheckByGuids(guids []string) map[string]entity.AddrObject {
 	var addresses []entity.AddrObject
 	result := make(map[string]entity.AddrObject)
 	a.DB.Select([]string{"id, aoguid"}).Where("aoguid IN (?)", guids).Find(&addresses)
@@ -86,6 +72,6 @@ func (a *AddressRepository) CheckByGuids(guids []string) map[string]entity.AddrO
 	return result
 }
 
-func (a *AddressRepository) Update(item interface{}) {
+func (a *HouseRepository) Update(item interface{}) {
 
 }

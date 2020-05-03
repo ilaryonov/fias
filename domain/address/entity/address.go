@@ -20,6 +20,6 @@ func GetAddressXmlFile() string {
 	return "AS_ADDROBJ_"
 }
 
-func (*AddrObject) TableName() string {
+func (a AddrObject) TableName() string {
 	return "fias_address"
 }
