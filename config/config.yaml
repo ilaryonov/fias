@@ -1,7 +1,7 @@
 #Database
 db:
   dsn: shell:password@(10.2.1.1:3306)/fias2?charset=utf8
-  logMode: true
+  logMode: false
   debug: true
 directory:
   filePath: /media/ilarionov/hard-disk/fias/

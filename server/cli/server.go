@@ -21,7 +21,9 @@ type App struct {
 	Server           *cli.App
 	Logger           logrus.Logger
 	DB               *gorm.DB
+	ImportService    *address.ImportService
 	AddressService   *address.AddressImportService
+	HouseService     *address.HouseImportService
 	VersionService   *version.VersionService
 	DirectoryService *directory.DirectoryService
 	FiasApiService   *fiasApi.FiasApiService
@@ -36,14 +38,22 @@ func NewApp(logger logrus.Logger) *App {
 	}()
 	db := initDb()
 	addressRepo := addressMysql.NewMysqlAddressRepository(db)
+	houseRepo := addressMysql.NewMysqlHouseRepository(db)
 	versionRepo := versionMysql.NewMysqlVersionRepository(db)
+
 	directoryService := directory.NewDirectoryService(logger)
+	addressImportService := address.NewAddressService(addressRepo, logger, directoryService)
+	houseImportService := address.NewHouseImportService(houseRepo, logger, directoryService)
+	importService := address.NewImportService(logger, directoryService, addressImportService, houseImportService)
+
 	return &App{
 		Server:           server,
 		Logger:           logger,
 		DB:               db,
 		DirectoryService: directoryService,
-		AddressService:   address.NewAddressService(addressRepo, logger, directoryService),
+		ImportService:    importService,
+		AddressService:   addressImportService,
+		HouseService:     houseImportService,
 		VersionService:   version.NewVersionService(versionRepo, logger),
 		FiasApiService:   fiasApi.NewFiasApiService(logger),
 	}

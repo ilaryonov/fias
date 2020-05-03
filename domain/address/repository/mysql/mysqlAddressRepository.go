@@ -4,7 +4,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"gitlab.com/ilaryonov/fiascli-clean/domain/address"
 	"gitlab.com/ilaryonov/fiascli-clean/domain/address/entity"
-	"log"
 )
 
 type AddressRepository struct {
@@ -23,7 +22,7 @@ func (a AddressRepository) GetCityByFormalname(term string) (*entity.AddrObject,
 	panic("implement me")
 }
 
-func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) error {
+func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) {
 	var aoguid []string
 	var forInsert []interface{}
 
@@ -34,9 +33,9 @@ func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) err
 
 	for _, item := range collection {
 		if len(foundedAddresses[item.(entity.AddrObject).Aoguid].Aoguid) > 0 {
-			addr := item.(entity.AddrObject)
+			/*addr := item.(entity.AddrObject)
 			addr.ID = foundedAddresses[item.(entity.AddrObject).Aoguid].ID
-			a.DB.Save(&addr)
+			a.DB.Save(&addr)*/
 		} else {
 			forInsert = append(forInsert, item.(entity.AddrObject))
 		}
@@ -46,7 +45,6 @@ func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) err
 	var tableName string
 	switch first.(type) {
 	case entity.AddrObject:
-		log.Println(collection[0])
 		tableName = entity.AddrObject{}.TableName()
 		break
 	case entity.HouseObject:
@@ -54,16 +52,9 @@ func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) err
 	default:
 		break
 	}
-	// If there is no data, nothing to do.
-	if len(collection) == 0 {
-		return nil
-	}
-	var err error
 	if len(forInsert) > 0 {
 		batchInsert(a.DB, forInsert, tableName)
 	}
-
-	return err
 }
 
 func (a *AddressRepository) BatchInsertAddress(collection []interface{}) error {

@@ -6,7 +6,7 @@ import (
 )
 
 func RegisterCliEndpoints(app *server.App) {
-	h := NewHandler(app.AddressService, app.Logger)
+	h := NewHandler(app.ImportService, app.Logger)
 	app.Server.Commands = []cli.Command{
 		{
 			Name:  "checkupdates",

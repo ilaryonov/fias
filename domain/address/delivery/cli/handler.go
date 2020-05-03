@@ -8,25 +8,23 @@ import (
 )
 
 type Handler struct {
-	addressService *service.AddressImportService
-	logger logrus.Logger
+	importService *service.ImportService
+	logger        logrus.Logger
 }
 
-func NewHandler(a *service.AddressImportService, logger logrus.Logger) *Handler {
+func NewHandler(a *service.ImportService, logger logrus.Logger) *Handler {
 	return &Handler{
-		addressService: a,
-		logger: logger,
+		importService: a,
+		logger:        logger,
 	}
 }
 
 func (h *Handler) CheckUpdates(fiasApi *fiasApi.FiasApiService, versionService *version.VersionService) {
-	v, err := versionService.GetLastVersionInfo()
-	if err != nil {
-		h.logger.Error(err.Error())
-	}
+	v := versionService.GetLastVersionInfo()
+
 	if v.Version > 0 {
-		h.addressService.CheckUpdates(fiasApi, v.Version)
+		h.importService.CheckUpdates(fiasApi, v.Version)
 	} else {
-		h.addressService.StartFullImport(fiasApi)
+		h.importService.StartFullImport(fiasApi)
 	}
 }
