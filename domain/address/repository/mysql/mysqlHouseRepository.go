@@ -19,7 +19,7 @@ func NewMysqlHouseRepository(db *gorm.DB) address.HouseRepositoryInterface {
 }
 
 func (hr *HouseRepository) InsertUpdateCollection(collection []interface{}) {
-	var aoguid []string
+	/*var aoguid []string
 	var forInsert []interface{}
 
 	for _, item := range collection {
@@ -35,28 +35,19 @@ func (hr *HouseRepository) InsertUpdateCollection(collection []interface{}) {
 		} else {
 			forInsert = append(forInsert, item.(entity.HouseObject))
 		}
-	}
+	}*/
 
-	first := collection[0]
-	var tableName string
-	switch first.(type) {
-	case entity.AddrObject:
-		tableName = entity.AddrObject{}.TableName()
-		break
-	case entity.HouseObject:
-		tableName = entity.HouseObject{}.TableName()
-	default:
-		break
-	}
-	if len(forInsert) > 0 {
-		batchInsert(hr.DB, forInsert, tableName)
+	tableName := entity.HouseObject{}.TableName()
+
+	if len(collection) > 0 {
+		batchInsert(hr.DB, collection, tableName)
 	}
 }
 
 func (hr *HouseRepository) CheckByGuids(guids []string) map[string]entity.HouseObject {
 	var houses []entity.HouseObject
 	result := make(map[string]entity.HouseObject)
-	hr.DB.Select([]string{"id, houseguid"}).Where("houseguid IN (?)", guids).Find(&houses)
+	hr.DB.Select([]string{"houseguid"}).Where("houseguid IN (?)", guids).Find(&houses)
 	for _, item := range houses {
 		result[item.Houseguid] = item
 	}

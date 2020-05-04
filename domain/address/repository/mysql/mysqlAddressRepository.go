@@ -23,6 +23,7 @@ func (a AddressRepository) GetCityByFormalname(term string) (*entity.AddrObject,
 }
 
 func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) {
+	//TODO узкое место, тормозит выгрузка из-за проверок на наличие
 	var aoguid []string
 	var forInsert []interface{}
 
@@ -57,26 +58,12 @@ func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) {
 	}
 }
 
-func (a *AddressRepository) BatchInsertAddress(collection []interface{}) error {
-
-	return nil
-}
-
-func (a *AddressRepository) BatchInsertHouse(collection []interface{}) error {
-
-	return nil
-}
-
 func (a *AddressRepository) CheckByGuids(guids []string) map[string]entity.AddrObject {
 	var addresses []entity.AddrObject
 	result := make(map[string]entity.AddrObject)
-	a.DB.Select([]string{"id, aoguid"}).Where("aoguid IN (?)", guids).Find(&addresses)
+	a.DB.Select([]string{"aoguid"}).Where("aoguid IN (?)", guids).Find(&addresses)
 	for _, item := range addresses {
 		result[item.Aoguid] = item
 	}
 	return result
-}
-
-func (a *AddressRepository) Update(item interface{}) {
-
 }

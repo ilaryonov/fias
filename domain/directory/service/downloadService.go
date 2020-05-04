@@ -50,37 +50,39 @@ func NewDownloadService(logger logrus.Logger) *DownloadService {
 
 func (d *DownloadService) DownloadFile(url string) (*entity.File, error) {
 	fileName := path.Base(url)
-	filepath := viper.GetString("directory.filePath") + fileName
-	out, err := os.Create(filepath + ".tmp")
-	if err != nil {
-		return nil, err
-	}
+	filepathlocal := viper.GetString("directory.filePath") + fileName
+	if _, err := os.Stat(filepathlocal); os.IsNotExist(err) {
+		out, err := os.Create(filepathlocal + ".tmp")
+		if err != nil {
+			return nil, err
+		}
 
-	// Get the data
-	resp, err := http.Get(url)
-	if err != nil {
+		// Get the data
+		resp, err := http.Get(url)
+		if err != nil {
+			out.Close()
+			return nil, err
+		}
+		defer resp.Body.Close()
+
+		// Create our progress reporter and pass it to be used alongside our writer
+		counter := &WriteCounter{}
+		if _, err = io.Copy(out, io.TeeReader(resp.Body, counter)); err != nil {
+			out.Close()
+			return nil, err
+		}
+
+		// The progress use the same line so print a new line once it's finished downloading
+		fmt.Print("\n")
+
+		// Close the file without defer so it can happen before Rename()
 		out.Close()
-		return nil, err
+
+		if err = os.Rename(filepathlocal+".tmp", filepathlocal); err != nil {
+			return nil, err
+		}
 	}
-	defer resp.Body.Close()
-
-	// Create our progress reporter and pass it to be used alongside our writer
-	counter := &WriteCounter{}
-	if _, err = io.Copy(out, io.TeeReader(resp.Body, counter)); err != nil {
-		out.Close()
-		return nil, err
-	}
-
-	// The progress use the same line so print a new line once it's finished downloading
-	fmt.Print("\n")
-
-	// Close the file without defer so it can happen before Rename()
-	out.Close()
-
-	if err = os.Rename(filepath+".tmp", filepath); err != nil {
-		return nil, err
-	}
-	return &entity.File{Path: filepath}, nil
+	return &entity.File{Path: filepathlocal}, nil
 }
 
 func (d *DownloadService) Unzip(file *entity.File) ([]entity.File, error) {
@@ -105,7 +107,7 @@ func (d *DownloadService) Unzip(file *entity.File) ([]entity.File, error) {
 		fileExt := path.Ext(fpath)
 		isAddr, _ := regexp.MatchString(addressEntity.GetAddressXmlFile(), f.Name)
 		isHouse, _ := regexp.MatchString(addressEntity.GetHouseXmlFile(), f.Name)
-		if (!isHouse && !isAddr) || fileExt != ".XML"{
+		if (!isHouse && !isAddr) || fileExt != ".XML" {
 			continue
 		}
 		filenames = append(filenames, entity.File{Path: fpath})
@@ -114,29 +116,30 @@ func (d *DownloadService) Unzip(file *entity.File) ([]entity.File, error) {
 			continue
 		}
 
-		// Make File
-		if err = os.MkdirAll(filepath.Dir(fpath), os.ModePerm); err != nil {
-			return filenames, err
-		}
+		if _, err := os.Stat(filepath.Dir(fpath)); os.IsNotExist(err) {
+			if err = os.MkdirAll(filepath.Dir(fpath), os.ModePerm); err != nil {
+				return filenames, err
+			}
 
-		outFile, err := os.OpenFile(fpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
-		if err != nil {
-			return filenames, err
-		}
+			outFile, err := os.OpenFile(fpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+			if err != nil {
+				return filenames, err
+			}
 
-		rc, err := f.Open()
-		if err != nil {
-			return filenames, err
-		}
+			rc, err := f.Open()
+			if err != nil {
+				return filenames, err
+			}
 
-		_, err = io.Copy(outFile, rc)
+			_, err = io.Copy(outFile, rc)
 
-		// Close the file without defer to close before next iteration of loop
-		outFile.Close()
-		rc.Close()
+			// Close the file without defer to close before next iteration of loop
+			outFile.Close()
+			rc.Close()
 
-		if err != nil {
-			return filenames, err
+			if err != nil {
+				return filenames, err
+			}
 		}
 	}
 	return filenames, nil

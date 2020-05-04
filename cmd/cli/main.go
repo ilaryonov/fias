@@ -10,6 +10,9 @@ import (
 )
 
 func main() {
+	/*numcpu := runtime.NumCPU()
+	fmt.Println("NumCPU", numcpu)
+	runtime.GOMAXPROCS(numcpu)*/
 	logger := logrus.Logger{}
 	logger.SetFormatter(&logrus.JSONFormatter{})
 	logger.SetOutput(os.Stdout)

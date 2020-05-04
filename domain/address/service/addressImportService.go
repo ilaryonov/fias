@@ -3,12 +3,14 @@ package service
 import (
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"gitlab.com/ilaryonov/fiascli-clean/domain/address"
 	addressEntity "gitlab.com/ilaryonov/fiascli-clean/domain/address/entity"
 	"gitlab.com/ilaryonov/fiascli-clean/domain/directory/service"
 	"gitlab.com/ilaryonov/fiascli-clean/helper"
 	"sync"
+	"time"
 )
 
 type AddressImportService struct {
@@ -27,6 +29,7 @@ func NewAddressService(addressRepo address.AddressRepositoryInterface, logger lo
 
 func (a *AddressImportService) Import(filePath string, wg *sync.WaitGroup) {
 	defer wg.Done()
+	start := time.Now()
 	addressChannel := make(chan interface{})
 	done := make(chan bool)
 	//defer close(addressChannel)
@@ -61,5 +64,7 @@ Loop:
 	if len(collection) > 0 {
 		collection = insertCollection(a.addressRepo, collection, nil)
 	}
-	a.logger.Info("done import addresses. Count: ", count)
+	finish := time.Now()
+	fmt.Println("Количество добавленных записей в адреса:", count)
+	fmt.Println("Время выполнения адресов:", finish.Sub(start))
 }

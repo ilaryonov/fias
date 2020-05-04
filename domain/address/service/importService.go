@@ -40,7 +40,7 @@ func (is *ImportService) CheckUpdates(api *fiasApi.FiasApiService, version int) 
 
 func (is *ImportService) StartFullImport(api *fiasApi.FiasApiService) {
 	fileResult := api.GetLastDownloadFileInfo()
-	if len(fileResult.FiasDeltaXmlUrl) > 0 {
+	if len(fileResult.FiasCompleteXmlUrl) > 0 {
 		xmlFiles := is.directoryService.DownloadAndExtractFile(fileResult.FiasCompleteXmlUrl)
 		is.ParseFiles(xmlFiles)
 	}

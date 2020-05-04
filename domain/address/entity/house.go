@@ -1,14 +1,9 @@
 package entity
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 type HouseObject struct {
-	gorm.Model
-	ParentGuid string `xml:"AOGUID,attr"`
-	Houseguid  string `xml:"HOUSEGUID,attr"`
-	Housenum   string `xml:"HOUSENUM,attr"`
+	ParentGuid string `xml:"AOGUID,attr" gorm:"primary_key"`
+	Houseguid  string `xml:"HOUSEGUID,attr" gorm:"index:number"`
+	Housenum   string `xml:"HOUSENUM,attr" gorm:"index:number"`
 	Buildnum   string `xml:"BUILDNUM,attr"`
 	Structnum  string `xml:"STRUCTNUM,attr"`
 	Postalcode string `xml:"POSTALCODE,attr"`

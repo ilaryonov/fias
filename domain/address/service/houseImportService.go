@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"gitlab.com/ilaryonov/fiascli-clean/domain/address"
 	addressEntity "gitlab.com/ilaryonov/fiascli-clean/domain/address/entity"
@@ -28,6 +29,7 @@ func NewHouseImportService(houseRepo address.HouseRepositoryInterface, logger lo
 
 func (his *HouseImportService) Import(filePath string, wg *sync.WaitGroup) {
 	defer wg.Done()
+	start := time.Now()
 	houseChannel := make(chan interface{})
 	done := make(chan bool)
 	defer close(houseChannel)
@@ -64,5 +66,7 @@ Loop:
 	if len(collection) > 0 {
 		collection = insertCollection(his.houseRepo, collection, nil)
 	}
-	his.logger.Info("done import houses. Count: ", count)
+	finish := time.Now()
+	fmt.Println("Количество добавленных записей в адреса:", count)
+	fmt.Println("Время выполнения адресов:", finish.Sub(start))
 }
