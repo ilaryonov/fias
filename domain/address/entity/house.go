@@ -1,8 +1,8 @@
 package entity
 
 type HouseObject struct {
-	ParentGuid string `xml:"AOGUID,attr" gorm:"primary_key"`
-	Houseguid  string `xml:"HOUSEGUID,attr" gorm:"index:number"`
+	ParentGuid string `xml:"AOGUID,attr"`
+	Houseguid  string `xml:"HOUSEGUID,attr" gorm:"primary_key"`
 	Housenum   string `xml:"HOUSENUM,attr" gorm:"index:number"`
 	Buildnum   string `xml:"BUILDNUM,attr"`
 	Structnum  string `xml:"STRUCTNUM,attr"`

@@ -22,36 +22,29 @@ func (a AddressRepository) GetCityByFormalname(term string) (*entity.AddrObject,
 	panic("implement me")
 }
 
-func (a *AddressRepository) InsertUpdateCollection(collection []interface{}) {
-	//TODO узкое место, тормозит выгрузка из-за проверок на наличие
-	var aoguid []string
+func (a *AddressRepository) InsertUpdateCollection(collection []interface{}, isFull bool) {
+	tableName := entity.AddrObject{}.TableName()
 	var forInsert []interface{}
+	if isFull {
+		forInsert = collection
+	} else {
+		//TODO узкое место, тормозит выгрузка из-за проверок на наличие
+		var aoguid []string
 
-	for _, item := range collection {
-		aoguid = append(aoguid, item.(entity.AddrObject).Aoguid)
-	}
-	foundedAddresses := a.CheckByGuids(aoguid)
-
-	for _, item := range collection {
-		if len(foundedAddresses[item.(entity.AddrObject).Aoguid].Aoguid) > 0 {
-			/*addr := item.(entity.AddrObject)
-			addr.ID = foundedAddresses[item.(entity.AddrObject).Aoguid].ID
-			a.DB.Save(&addr)*/
-		} else {
-			forInsert = append(forInsert, item.(entity.AddrObject))
+		for _, item := range collection {
+			aoguid = append(aoguid, item.(entity.AddrObject).Aoguid)
 		}
-	}
+		foundedAddresses := a.CheckByGuids(aoguid)
 
-	first := collection[0]
-	var tableName string
-	switch first.(type) {
-	case entity.AddrObject:
-		tableName = entity.AddrObject{}.TableName()
-		break
-	case entity.HouseObject:
-		tableName = entity.HouseObject{}.TableName()
-	default:
-		break
+		for _, item := range collection {
+			if len(foundedAddresses[item.(entity.AddrObject).Aoguid].Aoguid) > 0 {
+				/*addr := item.(entity.AddrObject)
+				addr.ID = foundedAddresses[item.(entity.AddrObject).Aoguid].ID
+				a.DB.Save(&addr)*/
+			} else {
+				forInsert = append(forInsert, item.(entity.AddrObject))
+			}
+		}
 	}
 	if len(forInsert) > 0 {
 		batchInsert(a.DB, forInsert, tableName)

@@ -27,7 +27,7 @@ func NewAddressService(addressRepo address.AddressRepositoryInterface, logger lo
 	}
 }
 
-func (a *AddressImportService) Import(filePath string, wg *sync.WaitGroup) {
+func (a *AddressImportService) Import(filePath string, wg *sync.WaitGroup, isFull bool) {
 	defer wg.Done()
 	start := time.Now()
 	addressChannel := make(chan interface{})
@@ -37,7 +37,7 @@ func (a *AddressImportService) Import(filePath string, wg *sync.WaitGroup) {
 		if se.Name.Local == "Object" {
 			result := addressEntity.AddrObject{}
 			err := decoder.DecodeElement(&result, se)
-			result.ID = 0
+
 			if result.Actstatus == "0" {
 				return nil, errors.New("не активный адрес")
 			}
@@ -55,14 +55,14 @@ Loop:
 	for {
 		select {
 		case node := <-addressChannel:
-			collection = insertCollection(a.addressRepo, collection, node)
+			collection = insertCollection(a.addressRepo, collection, node, isFull)
 			count++
 		case <-done:
 			break Loop
 		}
 	}
 	if len(collection) > 0 {
-		collection = insertCollection(a.addressRepo, collection, nil)
+		collection = insertCollection(a.addressRepo, collection, nil, isFull)
 	}
 	finish := time.Now()
 	fmt.Println("Количество добавленных записей в адреса:", count)

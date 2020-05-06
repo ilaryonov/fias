@@ -18,26 +18,29 @@ func NewMysqlHouseRepository(db *gorm.DB) address.HouseRepositoryInterface {
 	return &HouseRepository{DB: db}
 }
 
-func (hr *HouseRepository) InsertUpdateCollection(collection []interface{}) {
-	/*var aoguid []string
+func (hr *HouseRepository) InsertUpdateCollection(collection []interface{}, isFull bool) {
+	tableName := entity.HouseObject{}.TableName()
+	var aoguid []string
 	var forInsert []interface{}
 
-	for _, item := range collection {
-		aoguid = append(aoguid, item.(entity.HouseObject).Houseguid)
-	}
-	foundedAddresses := hr.CheckByGuids(aoguid)
-
-	for _, item := range collection {
-		if len(foundedAddresses[item.(entity.HouseObject).Houseguid].Houseguid) > 0 {
-			addr := item.(entity.HouseObject)
-			addr.ID = foundedAddresses[item.(entity.HouseObject).Houseguid].ID
-			hr.DB.Save(&addr)
-		} else {
-			forInsert = append(forInsert, item.(entity.HouseObject))
+	if isFull {
+		forInsert = collection
+	} else {
+		for _, item := range collection {
+			aoguid = append(aoguid, item.(entity.HouseObject).Houseguid)
 		}
-	}*/
+		foundedAddresses := hr.CheckByGuids(aoguid)
 
-	tableName := entity.HouseObject{}.TableName()
+		for _, item := range collection {
+			if len(foundedAddresses[item.(entity.HouseObject).Houseguid].Houseguid) > 0 {
+				house := item.(entity.HouseObject)
+				house.Houseguid = foundedAddresses[item.(entity.HouseObject).Houseguid].Houseguid
+				hr.DB.Save(&house)
+			} else {
+				forInsert = append(forInsert, item.(entity.HouseObject))
+			}
+		}
+	}
 
 	if len(collection) > 0 {
 		batchInsert(hr.DB, collection, tableName)

@@ -1,0 +1,20 @@
+syntax="proto3";
+package address_grpc;
+
+service AddressHandler {
+  rpc GetByGuid (GuidRequest) returns (Address);
+}
+
+message GuidRequest{
+  string guid=1;
+}
+
+message Address {
+    int64 ID = 1;
+	string Aoguid = 2;
+	string Aolevel = 3 ;
+	string Parentguid = 4;
+	string Shortname = 5;
+	string Formalname = 6;
+	string Postalcode = 7;
+}
