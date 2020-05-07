@@ -18,7 +18,7 @@ func NewHandler(a *grpc_service.AddressService) *Handler {
 	gserver := grpc.NewServer()
 	handler := &Handler{
 		addressService: a,
-		server: gserver,
+		server:         gserver,
 	}
 	address_grpc.RegisterAddressHandlerServer(gserver, handler)
 	reflection.Register(gserver)
@@ -26,12 +26,23 @@ func NewHandler(a *grpc_service.AddressService) *Handler {
 }
 
 func (h *Handler) GetByGuid(ctx context.Context, guid *address_grpc.GuidRequest) (*address_grpc.Address, error) {
-	add, err := h.addressService.GetByGuid(guid)
-	return add, err
+	add, err := h.addressService.GetByGuid(guid.Guid)
+	if err != nil {
+		//todo log
+	}
+	result := address_grpc.Address{
+		Aoguid:     add.Aoguid,
+		Aolevel:    add.Aolevel,
+		Formalname: add.Formalname,
+		Parentguid: add.Parentguid,
+		Shortname:  add.Shortname,
+		Postalcode: add.Postalcode,
+	}
+	return &result, err
 }
 
 func (h *Handler) Serve() error {
-	listener, err := net.Listen("tcp", ":5300")
+	listener, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		return err
 	}

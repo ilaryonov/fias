@@ -1,20 +1,27 @@
-syntax="proto3";
+syntax = "proto3";
 package address_grpc;
 
+import "google/api/annotations.proto";
+
 service AddressHandler {
-  rpc GetByGuid (GuidRequest) returns (Address);
+  rpc GetByGuid (GuidRequest) returns (Address) {
+    option (google.api.http) = {
+      get: "/api/v1/address/{guid}"
+    };
+
+  };
 }
 
 message GuidRequest{
-  string guid=1;
+  string guid = 1;
 }
 
 message Address {
-    int64 ID = 1;
-	string Aoguid = 2;
-	string Aolevel = 3 ;
-	string Parentguid = 4;
-	string Shortname = 5;
-	string Formalname = 6;
-	string Postalcode = 7;
+  int64 ID = 1;
+  string Aoguid = 2;
+  string Aolevel = 3 ;
+  string Parentguid = 4;
+  string Shortname = 5;
+  string Formalname = 6;
+  string Postalcode = 7;
 }

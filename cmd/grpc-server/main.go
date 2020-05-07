@@ -17,7 +17,7 @@ func main() {
 		logger.Fatalf("%s", err.Error())
 	}
 	app := grpc.NewApp(logger)
-	defer app.DB.Close()
+	//defer app.DB.Close()
 
 	//addressRepo := addressRepo.NewGormAddressRepository(db)
 

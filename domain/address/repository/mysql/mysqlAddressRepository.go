@@ -17,6 +17,11 @@ func NewMysqlAddressRepository(db *gorm.DB) address.AddressRepositoryInterface {
 func (a *AddressRepository) GetByFormalname(term string) (*entity.AddrObject, error) {
 	panic("implement me")
 }
+func (a *AddressRepository) GetByGuid(guid string) entity.AddrObject {
+	addr := entity.AddrObject{}
+	a.DB.Where("aoguid = ?", guid).First(&addr)
+	return addr
+}
 
 func (a AddressRepository) GetCityByFormalname(term string) (*entity.AddrObject, error) {
 	panic("implement me")

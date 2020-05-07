@@ -46,6 +46,7 @@ func (is *ImportService) StartFullImport(api *fiasApi.FiasApiService) {
 		xmlFiles := is.directoryService.DownloadAndExtractFile(fileResult.FiasCompleteXmlUrl)
 		is.ParseFiles(xmlFiles)
 	}
+	ver
 }
 
 func (is *ImportService) ParseFiles(files *[]entity.File) {
@@ -61,6 +62,7 @@ func (is *ImportService) ParseFiles(files *[]entity.File) {
 		}
 	}
 	wg.Wait()
+
 }
 
 func insertCollection(repo address.InsertUpdateInterface, collection []interface{}, node interface{}, isFull bool) []interface{} {

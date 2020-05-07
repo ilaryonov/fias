@@ -1,6 +1,7 @@
 package entity
 
 type AddrObject struct {
+	ID        uint `gorm:"primary_key"`
 	Aoguid     string `xml:"AOGUID,attr" gorm:"primary_key"`
 	Aolevel    string `xml:"AOLEVEL,attr" gorm:"index:city;index:street"`
 	Parentguid string `xml:"PARENTGUID,attr" gorm:"index:parent;index:street"`
