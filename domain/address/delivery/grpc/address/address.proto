@@ -2,14 +2,19 @@ syntax = "proto3";
 package address_grpc;
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 service AddressHandler {
   rpc GetByGuid (GuidRequest) returns (Address) {
     option (google.api.http) = {
       get: "/api/v1/address/{guid}"
     };
-
   };
+  rpc GetAllCities (google.protobuf.Empty) returns (stream Address) {
+    option (google.api.http) = {
+      get: "/api/v1/cities"
+    };
+  }
 }
 
 message GuidRequest{

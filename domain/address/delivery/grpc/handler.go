@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"github.com/golang/protobuf/ptypes/empty"
 	address_grpc "gitlab.com/ilaryonov/fiascli-clean/domain/address/delivery/grpc/address"
 	grpc_service "gitlab.com/ilaryonov/fiascli-clean/domain/address/service/grpc"
 	"google.golang.org/grpc"
@@ -12,6 +13,25 @@ import (
 type Handler struct {
 	server         *grpc.Server
 	addressService *grpc_service.AddressService
+}
+
+func (h *Handler) GetAllCities(empty *empty.Empty, stream address_grpc.AddressHandler_GetAllCitiesServer) error {
+	cities, err := h.addressService.GetCities()
+	if err != nil {
+		//todo log
+	}
+	for _, city := range cities {
+		result := address_grpc.Address{
+			Aoguid:     city.Aoguid,
+			Aolevel:    city.Aolevel,
+			Formalname: city.Formalname,
+			Parentguid: city.Parentguid,
+			Shortname:  city.Shortname,
+			Postalcode: city.Postalcode,
+		}
+		stream.Send(&result)
+	}
+	return nil
 }
 
 func NewHandler(a *grpc_service.AddressService) *Handler {

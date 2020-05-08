@@ -22,3 +22,8 @@ func (a *AddressService) GetByGuid(guid string) (*entity.AddrObject, error) {
 	address := a.addressRepo.GetByGuid(guid)
 	return &address, nil
 }
+
+func (a *AddressService) GetCities() ([]entity.AddrObject, interface{}) {
+	cities := a.addressRepo.GetCities()
+	return cities, nil
+}

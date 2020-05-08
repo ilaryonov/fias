@@ -65,3 +65,10 @@ func (a *AddressRepository) CheckByGuids(guids []string) map[string]entity.AddrO
 	}
 	return result
 }
+
+func (a *AddressRepository) GetCities() []entity.AddrObject {
+	var cities []entity.AddrObject
+	a.DB.Where("aolevel IN (?) AND shortname = ?", []int{1, 4}, "г").Order("aolevel asc").Find(&cities)
+
+	return cities
+}

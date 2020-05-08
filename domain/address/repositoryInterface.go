@@ -7,6 +7,7 @@ type AddressRepositoryInterface interface {
 	GetCityByFormalname(term string) (*entity.AddrObject, error)
 	InsertUpdateCollection(collection []interface{}, isFull bool)
 	GetByGuid(guid string) entity.AddrObject
+	GetCities() []entity.AddrObject
 }
 
 type HouseRepositoryInterface interface {
