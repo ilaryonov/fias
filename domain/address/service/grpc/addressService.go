@@ -27,3 +27,9 @@ func (a *AddressService) GetCities() ([]entity.AddrObject, interface{}) {
 	cities := a.addressRepo.GetCities()
 	return cities, nil
 }
+
+func (a *AddressService) GetCitiesByTerm(term string, count int64) ([]entity.AddrObject, error) {
+	cities := a.addressRepo.GetCitiesByTerm(term, count)
+	return cities, nil
+}
+

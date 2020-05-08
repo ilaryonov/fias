@@ -15,21 +15,41 @@ type Handler struct {
 	addressService *grpc_service.AddressService
 }
 
-func (h *Handler) GetAllCities(empty *empty.Empty, stream address_grpc.AddressHandler_GetAllCitiesServer) error {
-	cities, err := h.addressService.GetCities()
+func (h *Handler) GetCitiesByTerm(request *address_grpc.TermRequest, stream address_grpc.AddressHandler_GetCitiesByTermServer) error {
+	if request.Count == 0 {
+		request.Count = 10
+	}
+	cities, err := h.addressService.GetCitiesByTerm(request.Term, request.Count)
 	if err != nil {
 		//todo log
 	}
 	for _, city := range cities {
-		result := address_grpc.Address{
+		stream.Send(&address_grpc.Address{
 			Aoguid:     city.Aoguid,
 			Aolevel:    city.Aolevel,
 			Formalname: city.Formalname,
 			Parentguid: city.Parentguid,
 			Shortname:  city.Shortname,
 			Postalcode: city.Postalcode,
-		}
-		stream.Send(&result)
+		})
+	}
+	return nil
+}
+
+func (h *Handler) GetAllCities(empty *empty.Empty, stream address_grpc.AddressHandler_GetAllCitiesServer) error {
+	cities, err := h.addressService.GetCities()
+	if err != nil {
+		//todo log
+	}
+	for _, city := range cities {
+		stream.Send(&address_grpc.Address{
+			Aoguid:     city.Aoguid,
+			Aolevel:    city.Aolevel,
+			Formalname: city.Formalname,
+			Parentguid: city.Parentguid,
+			Shortname:  city.Shortname,
+			Postalcode: city.Postalcode,
+		})
 	}
 	return nil
 }

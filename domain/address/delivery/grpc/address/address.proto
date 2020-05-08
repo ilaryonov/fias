@@ -15,10 +15,19 @@ service AddressHandler {
       get: "/api/v1/cities"
     };
   }
+  rpc GetCitiesByTerm (TermRequest) returns (stream Address) {
+    option (google.api.http) = {
+      get: "/api/v1/citybyterm/{term}"
+    };
+  }
 }
 
 message GuidRequest{
   string guid = 1;
+}
+message TermRequest{
+  string term = 1;
+  int64 count = 2;
 }
 
 message Address {

@@ -72,3 +72,10 @@ func (a *AddressRepository) GetCities() []entity.AddrObject {
 
 	return cities
 }
+
+func (a *AddressRepository) GetCitiesByTerm(term string, count int64) []entity.AddrObject {
+	var cities []entity.AddrObject
+	a.DB.Where("aolevel IN (?) AND shortname = ? AND formalname LIKE ?", []int{1, 4}, "г", term+"%").Limit(count).Order("aolevel asc").Find(&cities)
+
+	return cities
+}

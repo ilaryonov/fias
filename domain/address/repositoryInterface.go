@@ -8,6 +8,7 @@ type AddressRepositoryInterface interface {
 	InsertUpdateCollection(collection []interface{}, isFull bool)
 	GetByGuid(guid string) entity.AddrObject
 	GetCities() []entity.AddrObject
+	GetCitiesByTerm(term string, count int64) []entity.AddrObject
 }
 
 type HouseRepositoryInterface interface {

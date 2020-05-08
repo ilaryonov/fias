@@ -62,18 +62,16 @@ func (a *App) Run() error {
 	return nil
 }
 
-func(a *App) grpcService(wg *sync.WaitGroup) {
+func (a *App) grpcService(wg *sync.WaitGroup) {
 	defer wg.Done()
 	if err := a.Server.Serve(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
 
-
-
 func proxyService(wg *sync.WaitGroup) {
 	defer wg.Done()
-	var grpcServerEndpoint = flag.String("grpc-server-endpoint",  "localhost:50051", "gRPC server endpoint")
+	var grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:50051", "gRPC server endpoint")
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -82,7 +80,7 @@ func proxyService(wg *sync.WaitGroup) {
 	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := grpcHandlerAddress.RegisterAddressHandlerHandlerFromEndpoint(ctx, mux,  *grpcServerEndpoint, opts)
+	err := grpcHandlerAddress.RegisterAddressHandlerHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
 	if err != nil {
 		log.Fatal("error reg endpoint", err)
 	}
