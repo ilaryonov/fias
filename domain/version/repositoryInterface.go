@@ -1,7 +1,7 @@
 package addressGetVersion
 
 import (
-	"gitlab.com/ilaryonov/fiascli-clean/domain/version/entity"
+	"github.com/ilaryonov/fiasdomain/version/entity"
 )
 
 type VersionRepositoryInterface interface {

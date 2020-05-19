@@ -2,8 +2,8 @@ package service
 
 import (
 	"github.com/sirupsen/logrus"
-	version "gitlab.com/ilaryonov/fiascli-clean/domain/version"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/version/entity"
+	version "github.com/ilaryonov/fiasdomain/version"
+	"github.com/ilaryonov/fiasdomain/version/entity"
 )
 
 type VersionService struct {

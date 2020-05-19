@@ -3,15 +3,15 @@ package http
 import (
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
-	address_grpc "gitlab.com/ilaryonov/fiascli-clean/domain/address/delivery/grpc/address"
-	grpc_service "gitlab.com/ilaryonov/fiascli-clean/domain/address/service/grpc"
+	address_grpc "github.com/ilaryonov/fiasdomain/address/delivery/grpc/address"
+	grpc_service "github.com/ilaryonov/fiasdomain/address/service/grpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"net"
 )
 
 type Handler struct {
-	server         *grpc.Server
+	Server         *grpc.Server
 	addressService *grpc_service.AddressService
 }
 
@@ -55,10 +55,15 @@ func (h *Handler) GetAllCities(empty *empty.Empty, stream address_grpc.AddressHa
 }
 
 func NewHandler(a *grpc_service.AddressService) *Handler {
+	/*c, err := credentials.NewServerTLSFromFile("config/Server.pem", "config/Server.key")
+	if err != nil {
+		log.Fatalf("credentials.NewServerTLSFromFile err: %v", err)
+	}*/
+	/*grpc.Creds(c)*/
 	gserver := grpc.NewServer()
 	handler := &Handler{
 		addressService: a,
-		server:         gserver,
+		Server:         gserver,
 	}
 	address_grpc.RegisterAddressHandlerServer(gserver, handler)
 	reflection.Register(gserver)
@@ -87,6 +92,6 @@ func (h *Handler) Serve() error {
 		return err
 	}
 
-	h.server.Serve(listener)
+	h.Server.Serve(listener)
 	return nil
 }

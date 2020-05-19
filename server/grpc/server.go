@@ -6,17 +6,19 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
-	grpcHandler "gitlab.com/ilaryonov/fiascli-clean/domain/address/delivery/grpc"
-	grpcHandlerAddress "gitlab.com/ilaryonov/fiascli-clean/domain/address/delivery/grpc/address"
-	addressMysql "gitlab.com/ilaryonov/fiascli-clean/domain/address/repository/mysql"
-	grpcAddress "gitlab.com/ilaryonov/fiascli-clean/domain/address/service/grpc"
-	grpcService "gitlab.com/ilaryonov/fiascli-clean/domain/address/service/grpc"
-	versionMysql "gitlab.com/ilaryonov/fiascli-clean/domain/version/repository/mysql"
-	version "gitlab.com/ilaryonov/fiascli-clean/domain/version/service"
-	"gitlab.com/ilaryonov/fiascli-clean/helper"
+	grpcHandler "github.com/ilaryonov/fiasdomain/address/delivery/grpc"
+	grpcHandlerAddress "github.com/ilaryonov/fiasdomain/address/delivery/grpc/address"
+	addressMysql "github.com/ilaryonov/fiasdomain/address/repository/mysql"
+	grpcAddress "github.com/ilaryonov/fiasdomain/address/service/grpc"
+	grpcService "github.com/ilaryonov/fiasdomain/address/service/grpc"
+	versionMysql "github.com/ilaryonov/fiasdomain/version/repository/mysql"
+	version "github.com/ilaryonov/fiasdomain/version/service"
+	"github.com/ilaryonov/fiashelper"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"sync"
 )
 
@@ -62,16 +64,27 @@ func (a *App) Run() error {
 	return nil
 }
 
-func (a *App) grpcService(wg *sync.WaitGroup) {
+func(a *App) grpcService(wg *sync.WaitGroup) {
 	defer wg.Done()
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+
+	go func() {
+		oscall := <-c
+		log.Printf("system call:%+v", oscall)
+		a.Server.Server.GracefulStop()
+	}()
 	if err := a.Server.Serve(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
 
+
+
 func proxyService(wg *sync.WaitGroup) {
 	defer wg.Done()
-	var grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:50051", "gRPC server endpoint")
+	var grpcServerEndpoint = flag.String("grpc-server-endpoint",  "localhost:50051", "gRPC server endpoint")
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -80,7 +93,7 @@ func proxyService(wg *sync.WaitGroup) {
 	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := grpcHandlerAddress.RegisterAddressHandlerHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := grpcHandlerAddress.RegisterAddressHandlerHandlerFromEndpoint(ctx, mux,  *grpcServerEndpoint, opts)
 	if err != nil {
 		log.Fatal("error reg endpoint", err)
 	}

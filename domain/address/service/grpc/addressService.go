@@ -2,8 +2,8 @@ package grpc
 
 import (
 	"github.com/sirupsen/logrus"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/address"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/address/entity"
+	"github.com/ilaryonov/fiasdomain/address"
+	"github.com/ilaryonov/fiasdomain/address/entity"
 )
 
 type AddressService struct {

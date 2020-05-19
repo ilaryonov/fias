@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"gitlab.com/ilaryonov/fiascli-clean/domain/version/service"
+	"github.com/ilaryonov/fiasdomain/version/service"
 	"log"
 )
 

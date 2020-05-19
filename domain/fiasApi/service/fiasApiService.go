@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/fiasApi/entity"
+	"github.com/ilaryonov/fiasdomain/fiasApi/entity"
 	"log"
 	"net/http"
 )

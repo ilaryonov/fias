@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/sirupsen/logrus"
-	"gitlab.com/ilaryonov/fiascli-clean/config"
-	"gitlab.com/ilaryonov/fiascli-clean/server/grpc"
+	"github.com/ilaryonov/fiasconfig"
+	"github.com/ilaryonov/fiasserver/grpc"
 	"os"
 )
 

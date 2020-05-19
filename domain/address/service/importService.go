@@ -3,11 +3,11 @@ package service
 import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/address"
-	addressEntity "gitlab.com/ilaryonov/fiascli-clean/domain/address/entity"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/directory/entity"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/directory/service"
-	fiasApi "gitlab.com/ilaryonov/fiascli-clean/domain/fiasApi/service"
+	"github.com/ilaryonov/fiasdomain/address"
+	addressEntity "github.com/ilaryonov/fiasdomain/address/entity"
+	"github.com/ilaryonov/fiasdomain/directory/entity"
+	"github.com/ilaryonov/fiasdomain/directory/service"
+	fiasApi "github.com/ilaryonov/fiasdomain/fiasApi/service"
 	"regexp"
 	"sync"
 )
@@ -46,7 +46,6 @@ func (is *ImportService) StartFullImport(api *fiasApi.FiasApiService) {
 		xmlFiles := is.directoryService.DownloadAndExtractFile(fileResult.FiasCompleteXmlUrl)
 		is.ParseFiles(xmlFiles)
 	}
-	ver
 }
 
 func (is *ImportService) ParseFiles(files *[]entity.File) {

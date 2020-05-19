@@ -2,9 +2,9 @@ package cli
 
 import (
 	"github.com/sirupsen/logrus"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/address/service"
-	fiasApi "gitlab.com/ilaryonov/fiascli-clean/domain/fiasApi/service"
-	version "gitlab.com/ilaryonov/fiascli-clean/domain/version/service"
+	"github.com/ilaryonov/fiasdomain/address/service"
+	fiasApi "github.com/ilaryonov/fiasdomain/fiasApi/service"
+	version "github.com/ilaryonov/fiasdomain/version/service"
 )
 
 type Handler struct {

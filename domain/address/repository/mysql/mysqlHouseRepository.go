@@ -2,8 +2,8 @@ package mysql
 
 import (
 	"github.com/jinzhu/gorm"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/address"
-	"gitlab.com/ilaryonov/fiascli-clean/domain/address/entity"
+	"github.com/ilaryonov/fiasdomain/address"
+	"github.com/ilaryonov/fiasdomain/address/entity"
 )
 
 type HouseRepository struct {
