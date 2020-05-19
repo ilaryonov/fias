@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/ilaryonov/fiasconfig"
-	addressDelivery "github.com/ilaryonov/fiasdomain/address/delivery/cli"
-	versionDelivery "github.com/ilaryonov/fiasdomain/version/delivery/cli"
-	"github.com/ilaryonov/fiasserver/cli"
+	"github.com/ilaryonov/fias/config"
+	addressDelivery "github.com/ilaryonov/fias/domain/address/delivery/cli"
+	versionDelivery "github.com/ilaryonov/fias/domain/version/delivery/cli"
+	"github.com/ilaryonov/fias/server/cli"
 	"os"
 )
 

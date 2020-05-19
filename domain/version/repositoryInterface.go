@@ -1,7 +1,7 @@
 package addressGetVersion
 
 import (
-	"github.com/ilaryonov/fiasdomain/version/entity"
+	"github.com/ilaryonov/fias/domain/version/entity"
 )
 
 type VersionRepositoryInterface interface {

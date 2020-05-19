@@ -1,7 +1,7 @@
 package cli
 
 import (
-	"github.com/ilaryonov/fiasdomain/version/service"
+	"github.com/ilaryonov/fias/domain/version/service"
 	"log"
 )
 

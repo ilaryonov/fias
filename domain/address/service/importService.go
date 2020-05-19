@@ -3,11 +3,11 @@ package service
 import (
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"github.com/ilaryonov/fiasdomain/address"
-	addressEntity "github.com/ilaryonov/fiasdomain/address/entity"
-	"github.com/ilaryonov/fiasdomain/directory/entity"
-	"github.com/ilaryonov/fiasdomain/directory/service"
-	fiasApi "github.com/ilaryonov/fiasdomain/fiasApi/service"
+	"github.com/ilaryonov/fias/domain/address"
+	addressEntity "github.com/ilaryonov/fias/domain/address/entity"
+	"github.com/ilaryonov/fias/domain/directory/entity"
+	"github.com/ilaryonov/fias/domain/directory/service"
+	fiasApi "github.com/ilaryonov/fias/domain/fiasApi/service"
 	"regexp"
 	"sync"
 )

@@ -3,8 +3,8 @@ package http
 import (
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
-	address_grpc "github.com/ilaryonov/fiasdomain/address/delivery/grpc/address"
-	grpc_service "github.com/ilaryonov/fiasdomain/address/service/grpc"
+	address_grpc "github.com/ilaryonov/fias/domain/address/delivery/grpc/address"
+	grpc_service "github.com/ilaryonov/fias/domain/address/service/grpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"net"

@@ -3,8 +3,8 @@ package mysql
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
-	versionRepo "github.com/ilaryonov/fiasdomain/version"
-	"github.com/ilaryonov/fiasdomain/version/entity"
+	versionRepo "github.com/ilaryonov/fias/domain/version"
+	"github.com/ilaryonov/fias/domain/version/entity"
 )
 
 type VersionRepository struct {

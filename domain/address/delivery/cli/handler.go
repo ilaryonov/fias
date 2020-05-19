@@ -2,9 +2,9 @@ package cli
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/ilaryonov/fiasdomain/address/service"
-	fiasApi "github.com/ilaryonov/fiasdomain/fiasApi/service"
-	version "github.com/ilaryonov/fiasdomain/version/service"
+	"github.com/ilaryonov/fias/domain/address/service"
+	fiasApi "github.com/ilaryonov/fias/domain/fiasApi/service"
+	version "github.com/ilaryonov/fias/domain/version/service"
 )
 
 type Handler struct {

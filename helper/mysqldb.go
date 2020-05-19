@@ -4,8 +4,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
-	"github.com/ilaryonov/fiasdomain/address/entity"
-	entity2 "github.com/ilaryonov/fiasdomain/version/entity"
+	"github.com/ilaryonov/fias/domain/address/entity"
+	entity2 "github.com/ilaryonov/fias/domain/version/entity"
 )
 
 func InitMysqlGormDb() *gorm.DB {

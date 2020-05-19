@@ -1,6 +1,6 @@
 package address
 
-import "github.com/ilaryonov/fiasdomain/address/entity"
+import "github.com/ilaryonov/fias/domain/address/entity"
 
 type AddressRepositoryInterface interface {
 	GetByFormalname(term string) (*entity.AddrObject, error)

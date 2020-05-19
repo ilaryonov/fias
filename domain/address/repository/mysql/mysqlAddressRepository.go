@@ -2,8 +2,8 @@ package mysql
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/ilaryonov/fiasdomain/address"
-	"github.com/ilaryonov/fiasdomain/address/entity"
+	"github.com/ilaryonov/fias/domain/address"
+	"github.com/ilaryonov/fias/domain/address/entity"
 )
 
 type AddressRepository struct {

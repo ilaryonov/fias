@@ -2,7 +2,7 @@ package cli
 
 import (
 	"github.com/urfave/cli"
-	server "github.com/ilaryonov/fiasserver/cli"
+	server "github.com/ilaryonov/fias/server/cli"
 )
 
 func RegisterCliEndpoints(app *server.App) {

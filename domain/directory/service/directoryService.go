@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/ilaryonov/fiasdomain/directory/entity"
+	"github.com/ilaryonov/fias/domain/directory/entity"
 )
 
 type DirectoryService struct {

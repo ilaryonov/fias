@@ -3,7 +3,7 @@ package entity
 import (
 	"archive/zip"
 	"fmt"
-	"github.com/ilaryonov/fiasdomain/address/entity"
+	"github.com/ilaryonov/fias/domain/address/entity"
 	"io"
 	"os"
 	"path/filepath"
